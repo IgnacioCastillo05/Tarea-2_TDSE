@@ -1,50 +1,47 @@
 # Tarea-2_TDSE
-Trabajo de TDSE sobre regresión logística
+TDSE Project on Logistic Regression
 
 ## Paso 1
 
 ### Feature Selection
 
-Se seleccionaron 8 características basándose en tres criterios principales:
+Eight features were selected based on three main criteria:
 
-**1. Relevancia Clínica:**
-Las características elegidas son indicadores médicos establecidos para el diagnóstico 
-de enfermedad cardíaca según la literatura médica:
-- **Age**: Principal factor de riesgo no modificable
-- **Cholesterol & BP**: Factores de riesgo cardiovascular modificables
-- **Max HR**: Indicador de capacidad funcional cardíaca
-- **ST depression**: Marcador ECG de isquemia miocárdica
-- **Number of vessels fluro**: Resultado de angiografía coronaria
-- **Chest pain type**: Síntoma clínico diferencial
-- **Thallium**: Prueba de perfusión miocárdica
+**1. Clinical Relevance:**
+The chosen features are well‑established medical indicators for diagnosing heart disease according to the medical literature:
+- **Age**: Primary non‑modifiable risk factor
+- **Cholesterol & BP**: Modifiable cardiovascular risk factors
+- **Max HR**: Indicator of cardiac functional capacity
+- **ST depression**: ECG marker of myocardial ischemia
+- **Number of vessels fluro**: Coronary angiography result
+- **Chest pain type**: Differential clinical symptom
+- **Thallium**: Myocardial perfusion test
 
-**2. Análisis Exploratorio (EDA):**
-Durante el EDA se observó que todas las características seleccionadas presentan:
-- Distribuciones con variabilidad adecuada (sin valores constantes)
-- Rangos que cubren espectros clínicamente significativos
-- Presencia de casos en zonas de riesgo (ej: Cholesterol >200 mg/dL, BP >140 mmHg)
+**2. Exploratory Data Analysis (EDA):**
+During EDA it was observed that all selected features exhibit:
+- Distributions with adequate variability (no constant values)
+- Ranges covering clinically meaningful spectra
+- Presence of cases in risk zones (ej: Cholesterol >200 mg/dL, BP >140 mmHg)
 
-Por ejemplo:
-- **Age**: Concentración en 48-67 años (rango de mayor riesgo cardiovascular)
-- **Cholesterol**: 59% de pacientes con valores >200 mg/dL (límite de riesgo)
-- **ST depression**: Distribución sesgada con valores anormales (>0) en 36% de casos
-- **Max HR**: Variabilidad de 71-202 bpm, capturando diferentes niveles de condición física
+For example:
+- **Age**: Concentration between 48–67 years (highest‑risk range)
+- **Cholesterol**: 59% of patients have values >200 mg/dL (risk threshold)
+- **ST depression**: Skewed distribution; abnormal values (>0) in 36% of cases
+- **Max HR**: Variability from 71–202 bpm, capturing different fitness levels
 
 **3. Completitud de Datos:**
-Las 8 características seleccionadas no presentan valores nulos (270/270 registros completos),
-lo que elimina la necesidad de imputación y preserva la integridad del dataset.
+The 8 selected features have no missing values (270/270 complete records), eliminating the need for imputation and preserving dataset integrity.
+These 8 features represent a balance of:
 
-Estas 8 features representan un balance entre:
-- Diversidad de información (demográfica, síntomas, pruebas de laboratorio, ECG, imaging)
-- Parsimonia del modelo (evitar overfitting con demasiadas features)
-- Interpretabilidad clínica (todas son mediciones estándar en práctica médica)
+- Information diversity (demographics, symptoms, lab tests, ECG, imaging)
+- Model parsimony (avoiding overfitting with too many features)
+- Clinical interpretability (all features are standard medical measurements)
 
-## Paso 2
+## Step 2
 
-## Convergencia del Algoritmo
+## Algorithm Convergence
 
-El modelo de regresión logística convergió exitosamente después de 1500 iteraciones
-utilizando gradient descent con learning rate α = 0.01.
+The logistic regression model successfully converged after 1500 iterations using gradient descent with learning rate α = 0.01.
 
 Iter    0: Cost = 0.690608
 Iter  250: Cost = 0.458731
@@ -54,398 +51,321 @@ Iter 1000: Cost = 0.396851
 Iter 1250: Cost = 0.393089
 Iter 1499: Cost = 0.390799
 
-Costo inicial: 0.690608
-Costo final:    0.390799
+Initial cost: 0.690608
+Final cost:    0.390799
 Bias (b): -0.205146
 
 ![alt text](img/convergencia.png)
 
 **Evidencia de convergencia:**
-- Costo inicial: 0.6906 (iteración 0)
-- Costo final: 0.3908 (iteración 1499)
-- Reducción total: 0.2998 (43.4% de mejora)
-- Cambio en últimas 100 iteraciones: 0.00078980 (<0.001)
+- Initial cost: 0.6906 (iteration 0)
+- Final cost: 0.3908 (iteration 1499)
+- Total reduction: 0.2998 (43.4% improvement)
+- Change in last 100 iterations: 0.00078980 (<0.001)
 
-El gráfico de convergencia muestra:
-1. **Fase inicial (0-200 iters):** Descenso pronunciado del costo, indicando que el 
+The convergence plot shows:
+1. **Initial phase (0-200 iters):** Model quickly learns basic structure
    modelo aprende rápidamente la estructura básica de los datos.
-2. **Fase intermedia (200-800 iters):** Descenso gradual y consistente.
-3. **Fase final (800-1500 iters):** Estabilización (plateau), con cambios < 0.001,
-   confirmando convergencia.
+2. **Intermediate phase (200-800 iters):** Gradual, consistent decline
+3. **Final phase (800-1500 iters):** Plateau with minimal change (<0.001), confirming convergence
 
-**Conclusión:** El modelo alcanzó un mínimo local estable. El learning rate α=0.01 
-fue apropiado - ni muy grande (que causaría oscilaciones) ni muy pequeño (convergencia lenta).
+**Conclusion:** The model reached a stable local minimum. Learning rate α=0.01 was appropriate—neither too large (oscillations) nor too small (slow convergence).
 
-## Evaluación de Desempeño
+## Performance Evaluation
 
-### Métricas en Train vs Test:
+### Metrics on Train vs Test:
 
-| Métrica    | Train  | Test   | Diferencia |
+| Metric    | Train  | Test   | Difference |
 |------------|--------|--------|------------|
 | Accuracy   | 0.8254 | 0.8765 | +0.0511    |
 | Precision  | 0.8312 | 0.8250 | -0.0062    |
 | Recall     | 0.7619 | 0.9167 | +0.1548    |
 | F1-Score   | 0.7950 | 0.8684 | +0.0734    |
 
-### Interpretación:
+### Interpretation:
 
-**1. Ausencia de Overfitting:**
-- Las métricas de Test son **iguales o mejores** que Train
+**1. No Overfitting:**
+- Test metrics are equal or better than Train
 - Test Accuracy > Train Accuracy (+5.1%)
 - Test F1 > Train F1 (+7.3%)
-- Esto indica **excelente generalización** del modelo
+- Model generalizes extremely well
 
 **2. Trade-off Precision-Recall:**
-- **Precision (Test = 82.5%):** De los pacientes que el modelo predice con 
-  enfermedad, el 82.5% realmente la tienen (18% falsos positivos)
-- **Recall (Test = 91.7%):** El modelo detecta correctamente el 91.7% de los 
-  casos reales de enfermedad (solo 8.3% falsos negativos)
+- **Precision (Test = 82.5%):** 82.5% of predicted positive cases truly have disease
+- **Recall (Test = 91.7%):** The model correctly detects 91.7% of true disease cases
 
-**3. Contexto Médico:**
-En diagnóstico médico, **Recall alto es crítico** porque:
-- Es más costoso NO detectar enfermedad (falso negativo → paciente sin tratamiento)
-- Que generar falsos positivos (→ exámenes adicionales confirmarán)
-
-Nuestro modelo logra **Recall = 91.7%**, lo que significa que detecta 
-correctamente 11 de cada 12 pacientes enfermos, con solo 1 caso no detectado.
+**3. Medical Context:**
+High Recall is critical in medical diagnosis—false negatives are the most dangerous.
+This model detects ~11 out of 12 sick patients (only 1 false negative).
 
 **4. F1-Score:**
-- F1 = 0.8684 indica un **excelente balance** entre Precision y Recall
-- Confirma que el modelo es robusto para ambas clases
+- F1 = 0.8684 → excellent balance between Precision and Recall
 
-## Interpretación de Coeficientes (Weights)
 
-Los coeficientes del modelo indican cómo cada feature afecta la probabilidad de 
-enfermedad cardíaca. Un coeficiente positivo **aumenta** la probabilidad, mientras 
-que uno negativo la **disminuye**.
+## Coefficient Interpretation (Weights)
 
-### Ranking por Importancia (magnitud del coeficiente):
+Positive coefficients increase disease probability; negative ones decrease it.
+
+### Importance Ranking (absolute magnitude):
 
 ![alt text](img/coeficientes.png)
 
-| Feature                    | Coeficiente | Interpretación |
+| Feature                    | Coefficient | Interpretation |
 |----------------------------|-------------|----------------|
-| **Number of vessels fluro**| **+0.821**  | **MÁS importante** (↑ vasos bloqueados → ↑ riesgo) |
-| **Thallium**               | **+0.772**  | Resultado anormal → ↑ riesgo |
-| **Chest pain type**        | **+0.624**  | Angina típica → ↑ riesgo |
-| **ST depression**          | **+0.532**  | Depresión ST elevada → ↑ isquemia |
-| **Max HR**                 | **-0.457**  | Mayor frecuencia máxima → ↓ riesgo (mejor fitness) |
-| **BP**                     | **+0.163**  | Presión alta → ligero ↑ riesgo |
-| **Age**                    | **-0.103**  | Efecto marginal negativo (inesperado*) |
-| **Cholesterol**            | **+0.094**  | Efecto marginal positivo |
+| **Number of vessels fluro**| **+0.821**  | MOST important (more blocked vessels → higher risk) |
+| **Thallium**               | **+0.772**  | Abnormal result → higher risk |
+| **Chest pain type**        | **+0.624**  | Typical angina → higher risk |
+| **ST depression**          | **+0.532**  | High ST depression → ischemia |
+| **Max HR**                 | **-0.457**  | Higher max HR → lower risk |
+| **BP**                     | **+0.163**  | High BP → slight increased risk |
+| **Age**                    | **-0.103**  | Slight negative effect (unexpected*) |
+| **Cholesterol**            | **+0.094**  | Small positive effect |
 
 ### Insights Clave:
 
-**1. Features Más Discriminativas:**
-- **Number of vessels fluro** (coef = 0.821): La feature más importante. 
-  Cada vaso sanguíneo adicional bloqueado aumenta significativamente el 
-  log-odds de tener enfermedad.
+**1. Most Discriminative Features:**
+- **Number of vessels fluro** (coef = 0.821): The most important feature.
+Each additional blocked vessel significantly increases the log‑odds of having heart disease.
   
-- **Thallium** (coef = 0.772): Segunda más importante. Resultados anormales 
-  en la prueba de talio son fuertemente predictivos de enfermedad.
+- **Thallium** (coef = 0.772): Second most important.
+Abnormal results in the thallium test are strongly predictive of disease.
 
-**2. Max HR con Coeficiente Negativo:**
-- **Coef = -0.457**: A mayor frecuencia cardíaca máxima alcanzada, MENOR riesgo
-- **Explicación médica:** Pacientes que alcanzan HR alta durante ejercicio 
-  demuestran mejor capacidad cardiovascular. Una respuesta cardíaca limitada 
-  puede indicar isquemia o mala condición física.
+**2. Max HR with Negative Coefficient:**
+- **Coef = -0.457**: Higher maximum heart rate achieved → LOWER risk
+- **Medical explanation:** Patients who reach a high HR during exercise demonstrate better cardiovascular capacity. A limited HR response may indicate ischemia or poor physical condition.
 
-**3. Age con Coeficiente Negativo (inesperado):**
-- **Coef = -0.103**: Aunque la edad es factor de riesgo en medicina, el 
-  coeficiente negativo puede explicarse por:
-  - **Multicolinealidad:** El efecto de edad ya está capturado por otras 
-    features correlacionadas (ej: ST depression, vessels)
-  - **Dataset específico:** La muestra tiene rango etario acotado (mayoría 48-67 años)
-  - **Normalización:** El efecto es relativo a otros factores más fuertes
+**3. Age with Negative Coefficient (unexpected):**
+- **Coef = -0.103**: Although age is a medical risk factor, the negative coefficient can be explained by:
+  - **Multicollinearity:** The effect of age is already captured by other correlated features (e.g., ST depression, vessels)
+  - **Dataset-specific:** The sample has a narrow age range (mostly 48–67 years)
+  - **Normalization:** The effect is relative to stronger predictors
 
 **4. Cholesterol Efecto Débil:**
-- **Coef = 0.094** (pequeño): Aunque clínicamente relevante, en este modelo su 
-  efecto individual es menor cuando se controla por otras variables (vessels, 
-  thallium, ST depression ya capturan severidad).
+- **Coef = 0.094** (small): Although clinically relevant, in this model its individual effect is minor once other variables are controlled for (vessels, thallium, ST depression already capture disease severity).
 
-### Visualización de Importancia:
-El gráfico de barras muestra claramente que las **pruebas diagnósticas avanzadas** 
-(angiografía, talio, ECG) tienen mayor poder predictivo que los **factores de 
-riesgo básicos** (edad, colesterol, presión).
+### Importance Visualization:
+The bar chart clearly shows that advanced diagnostic tests (angiography, thallium, ECG) have higher predictive power than basic risk factors (age, cholesterol, blood pressure).
+This confirms that in this dataset, test results are more informative for classification than demographic/basic indicators.
 
-Esto confirma que en este dataset, los **resultados de pruebas** son más 
-informativos que los **indicadores demográficos/básicos** para la clasificación.
-
-## Paso 3
-Se utilizaron 3 parejas de características:
+## Step 3
+Three feature pairs were used:
 1. Age vs Cholesterol
 2. BP vs Max HR
 3. ST Depression vs Number of Vessels Fluro
 
 ## Age vs Cholesterol
 
-### Costo Final del Modelo 2D: 0.672006
+### Final Cost of the 2D Model: 0.672006
 
-### Observaciones Visuales:
+### Visual Observations:
 
 ![alt text](img/par1.png)
 
 **Decision Boundary:**
-- Línea diagonal de pendiente **negativa** (de arriba-izquierda a abajo-derecha)
-- Ecuación aproximada: `w₁*Age + w₂*Cholesterol + b = 0`
-- La pendiente negativa indica que ambos coeficientes tienen efectos opuestos
+- Diagonal line with negative slope (top-left to bottom-right)
+- Approximate equation: w₁*Age + w₂*Cholesterol + b = 0
+- Negative slope indicates both coefficients have opposite effects
 
-**Separabilidad de Clases:**
-- **Separación moderada a baja**: Se observa considerable **sobreposición** (overlap) 
-  entre círculos azules (Absence) y cuadrados rojos (Presence)
-- La región central (Age 45-60, Cholesterol 200-300) muestra **mezclado significativo**
-- No existe un threshold claro como "Cholesterol > 250" que separe perfectamente
+**Class Separability:**
+- **Moderate to low separation:**: There is considerable overlap between blue circles (Absence) and red squares (Presence)
+- The central region (Age 45–60, Cholesterol 200–300) shows significant mixing
+- No clear threshold such as “Cholesterol > 250” provides perfect separation
 
-**Distribución Espacial:**
-- **Zona azul (Absence):**
-  - Concentrada en: Edad baja + Colesterol bajo (esquina inferior-izquierda)
-  - También: Edad alta + Colesterol alto (esquina superior-derecha)
+**Spatial Distribution:**
+- **Blue zone (Absence):**
+  - Concentrated in: low age + low cholesterol (bottom-left)
+  - Also appears in: high age + high cholesterol (top-right)
   
-- **Zona roja (Presence):**
-  - Más dispersa en toda el área
-  - Mayor concentración en la zona central-derecha
+- **Red zone (Presence):**
+  - More scattered throughout the plot
+  - Higher concentration in the central-right area
 
-### Interpretación:
+### Interpretation:
 
-**¿Por qué la separación es limitada?**
+**Why is separation limited?**
 
-1. **Age y Cholesterol solos son insuficientes** para distinguir completamente entre 
-   pacientes sanos y enfermos. La enfermedad cardíaca depende de múltiples factores.
+1. Age and Cholesterol alone are insufficient to separate healthy vs diseased patients. Heart disease depends on multiple factors.
 
-2. **Relación compleja:** No existe una regla simple como "si Cholesterol > X entonces 
-   enfermedad". Pacientes jóvenes con colesterol alto pueden estar sanos (factor único), 
-   mientras que pacientes mayores con colesterol moderado pueden tener enfermedad 
-   (acumulación de factores).
+2. **Complex relationship:** There is no simple rule like “Cholesterol > X → disease”.
+- Young patients with high cholesterol may be healthy (single-factor risk)
+- Older patients with moderate cholesterol may still have disease (cumulative risk)
 
-3. **Costo relativamente alto (0.672)**: Comparado con otros pares, indica que este 
-   modelo 2D tiene mayor dificultad para clasificar correctamente.
+3. **Relatively high cost (0.672)**: Indicates difficulty in classification compared to other feature pairs.
 
-### Convergencia:
-El gráfico de convergencia muestra descenso rápido inicial y estabilización, 
-confirmando que el modelo alcanzó el mejor ajuste posible para estas 2 features.
+### Convergence:
+The convergence plot shows rapid initial descent and stabilization, confirming the model found the best possible fit for these two features.
 
-### Conclusión:
-Age y Cholesterol **no son suficientes por sí solos** para predecir enfermedad 
-cardíaca con alta precisión. Se requieren features diagnósticas adicionales 
-(ECG, angiografía, pruebas de esfuerzo).
+### Conclusion:
+Age and Cholesterol are not sufficient on their own to predict heart disease accurately. Additional diagnostic features (ECG, angiography, stress tests) are needed.
 
 ## BP (Blood Pressure) vs Max HR (Max Heart Rate)
 
-### Costo Final del Modelo 2D: 0.587574
+### Final Cost of the 2D Model: 0.587574
 
-### Observaciones Visuales:
+### Visual Observations:
 
 ![alt text](img/par2.png)
 
 **Decision Boundary:**
-- Línea diagonal de pendiente **positiva** (de abajo-izquierda a arriba-derecha)
-- Boundary más clara y definida que el Par 1
-- Divide el espacio en dos regiones relativamente equilibradas
+- Diagonal line with positive slope
+- Clearer and better defined than in Pair 1
+- Divides the space into two reasonably balanced regions
 
-**Separabilidad de Clases:**
-- **Separación moderada**: Mejor que Age-Cholesterol
-- Región superior-izquierda (BP bajo + Max HR alto) → Predominio de **Absence (azul)**
-- Región inferior-derecha (BP alto + Max HR bajo) → Predominio de **Presence (rojo)**
-- Aún hay sobreposición en la zona central, pero menos que Par 1
+**Class Separability:**
+- Moderate separation: Better than Age–Cholesterol
+- Upper-left region (low BP + high Max HR) → mostly Absence (blue)
+- Lower-right region (high BP + low Max HR) → mostly Presence (red)
+- Central region still shows overlap, but less than in Pair 1
 
-**Distribución Espacial:**
-- **Zona azul (Absence - Sin enfermedad):**
-  - Alta concentración en: **Max HR alto (>160 bpm) + BP bajo-moderado**
-  - Interpretación: Pacientes con buena capacidad cardiovascular (alcanzan HR alta)
+**Spatial Distribution:**
+- **Blue zone (Absence - no illness):**
+  - High concentration of high Max HR (>160 bpm) + low/moderate BP
+  - Interpretation: Good cardiovascular capacity
   
-- **Zona roja (Presence - Con enfermedad):**
-  - Concentrada en: **Max HR bajo (<140 bpm) + BP variable**
-  - Interpretación: Pacientes que no alcanzan HR alta durante ejercicio 
-    (posible isquemia o mala condición física)
+- **Red zone (Presence - with illness):**
+  - Concentrated in low Max HR (<140 bpm)
+  - Interpretation: Limited HR response → possible ischemia or poor conditioning
 
-### Interpretación Clínica:
+### Clinical Interpretation:
 
-**Max HR como indicador clave:**
-- **Max HR alto (>150)** → Indicador positivo de salud cardiovascular
-  - El corazón responde bien al esfuerzo
-  - Menor riesgo de enfermedad
+**Max HR is a key indicator:**
+- **High max HR (>150)** → good cardiovascular health
   
-- **Max HR bajo (<140)** → Señal de alarma
-  - Respuesta cardiovascular limitada
-  - Posible isquemia o capacidad reducida
-  - Mayor riesgo de enfermedad
+- **Low Max HR (<140)** → red flag (possible ischemia)
 
-**BP (Presión Arterial):**
-- Efecto menos pronunciado que Max HR
-- BP extremadamente alto (>180) aparece asociado con enfermedad
-- BP en rango normal-alto (120-160) es ambiguo sin otros indicadores
+**BP effect:**
+- Less pronounced than Max HR
+- Extreme BP (>180) is associated with disease
+- Normal-high BP (120–160) is ambiguous without additional indicators
 
-### Relación con Coeficientes del Modelo Completo:
-Recordemos que en el modelo de 8 features:
-- **Max HR: coef = -0.457** (negativo → mayor HR, menor riesgo)
-- **BP: coef = +0.163** (positivo → mayor BP, mayor riesgo)
+### Connection to the Full Model:
+In the full 8-feature model:
+- **Max HR: coef = -0.457**
+- **BP: coef = +0.163**
 
-Estos coeficientes se **reflejan en la pendiente positiva** del boundary:
-- Para compensar un Max HR bajo (↑ riesgo), se necesita BP bajo
-- Para compensar un BP alto (↑ riesgo), se necesita Max HR alto
+This aligns with the positive slope:
+- Low Max HR (↑ risk) can be compensated by low BP
+- High BP (↑ risk) can be compensated by high Max HR
 
-### Convergencia:
-Costo inicial ~0.69, final 0.587 → **mejor convergencia que Par 1**
-
-### Conclusión:
-BP y Max HR muestran **separabilidad moderada**, siendo Max HR el indicador 
-más discriminativo. Este par es **más informativo** que Age-Cholesterol para 
-clasificación binaria.
+### Conclusion:
+BP and Max HR show moderate separability, with Max HR being the dominant discriminator. This pair is more informative than Age–Cholesterol.
 
 ## ST Depression vs Number of Vessels Fluro
 
-### Costo Final del Modelo 2D: 0.515726
+### Final Cost of the 2D Model: 0.515726
 
-### MEJOR PAR - Menor costo de los tres
+### BEST PAIR — Lowest cost among the three
 
-### Observaciones Visuales:
+### Visual Observations:
 
 ![alt text](img/par3.png)
 
 **Decision Boundary:**
-- Línea diagonal de pendiente **negativa** muy pronunciada
-- Boundary **clara y bien definida**
-- Divide el espacio de manera efectiva con mínimo sobrelapamiento
+- Strongly negative slope
+- Clear and well‑defined boundary
+- Effectively separates classes with minimal overlap
 
-**Separabilidad de Clases:**
-- **Excelente separación**: Mejor de los tres pares analizados
-- **Zona azul (inferior-izquierda):** ST depression ≈ 0, Vessels = 0
-  - Región casi **pura** de Absence (círculos azules)
-  
-- **Zona roja (superior-derecha):** ST depression > 1, Vessels ≥ 2
-  - Región de **alta concentración** de Presence (cuadrados rojos)
+**Class Separability:**
+- Excellent separation
+- Blue zone: ST≈0, Vessels=0 → almost all healthy
+- Red zone: ST>1, Vessels≥2 → almost all diseased
 
-**Distribución Espacial:**
+**Spatial Pattern::**
 
-**Patrón Claro de Progresión:**
 ```
-Vessels = 0, ST = 0        →  Alta probabilidad de Absence (sano)
-Vessels = 1, ST = 0-2      →  Zona mixta (transición)
-Vessels ≥ 2, ST > 1        →  Alta probabilidad de Presence (enfermo)
+Vessels = 0, ST = 0        →  High probability of Absence
+Vessels = 1, ST = 0-2      →  Mixed/transition region
+Vessels ≥ 2, ST > 1        →  High probability of Presence
 ```
 
 **Cluster Analysis:**
 1. **Cluster Absence (0 vasos, ST ≈ 0):**
-   - Pacientes sin bloqueos vasculares
-   - ECG normal (sin depresión ST)
-   - → Casi todos están sanos
+   - No vascular blockages
+   - Normal ECG
+   - → Nearly all healthy
    
 2. **Cluster Presence (2-3 vasos, ST > 2):**
-   - Múltiples vasos bloqueados
-   - Isquemia severa (ST depression alta)
-   - → Casi todos tienen enfermedad
+   - Multiple blocked vessels
+   - Severe ischemia
+   - → Nearly all diseased
 
-### Interpretación Clínica:
+**Why is this pair so effective**
 
-**¿Por qué este par es tan efectivo?**
-
-1. **Ambas features son diagnósticas directas:**
-   - **Number of vessels fluro**: Resultado de **angiografía coronaria** 
-     (gold standard para detectar bloqueos)
-   - **ST depression**: Marcador de **isquemia miocárdica** en ECG
+1. **Both features are direct diagnostic signals:**
+   - Vessels: anatomical confirmation of blockage
+   - ST depression: functional confirmation of ischemia
    
-2. **Miden diferentes aspectos de la enfermedad:**
-   - Vessels → **Anatomía** (¿hay bloqueos físicos?)
-   - ST depression → **Función** (¿el corazón sufre isquemia?)
+2. **They measure different dimensions of heart disease**
    
-3. **Alta especificidad:**
-   - Vessels = 0 + ST = 0 → Probabilidad ~90% de estar sano
-   - Vessels ≥ 2 + ST > 2 → Probabilidad ~90% de tener enfermedad
-
-### Thresholds Clínicos Observados:
-
-**Regla empírica del boundary:**
-```
-Si (ST_depression > 1.5) O (Number_of_vessels ≥ 2):
-    → Alta probabilidad de Presence
-Sino:
-    → Alta probabilidad de Absence
-```
-
-### Relación con Modelo Completo (8D):
-En el modelo de 8 features, estos son los **coeficientes más altos**:
-- **Number of vessels fluro: +0.821** (MÁS importante)
-- **ST depression: +0.532** (4º más importante)
-
-Su combinación en 2D ya captura **gran parte del poder predictivo** del modelo completo.
+3. **High specificity with clear clinical thresholds:**
+   - Vessels = 0 + ST = 0 → ~90% of probability of being health
+   - Vessels ≥ 2 + ST > 2 → ~90% of probability of being sick
 
 ### Comparación de Costos:
 
-| Par                        | Costo Final | Interpretación |
+| Par                        | Final Cost | Interpretation |
 |----------------------------|-------------|----------------|
-| Age vs Cholesterol         | 0.672       | Separación limitada |
-| BP vs Max HR               | 0.588       | Separación moderada |
-| **ST depression vs Vessels** | **0.516**   | **Mejor separación** |
+| Age vs Cholesterol         | 0.672       | Limited separation |
+| BP vs Max HR               | 0.588       | Moderate separation |
+| **ST depression vs Vessels** | **0.516**   | **Best separation** |
 
-El costo 0.516 es **23% menor** que Age-Cholesterol, indicando clasificación 
-mucho más precisa con solo estas 2 features diagnósticas.
 
-### Convergencia:
-Convergencia rápida y suave, alcanzando plateau temprano (~500 iters).
+### Conclusion:
+ST Depression and Number of Vessels are the most discriminative features in the dataset. Even in 2D, they achieve high separation, matching real-world medical standards (angiography = gold standard).
 
-### Conclusión:
-**ST Depression y Number of Vessels son las features más discriminativas** del 
-dataset. Su combinación permite separar clases con **alta precisión incluso en 2D**, 
-confirmando que las **pruebas diagnósticas avanzadas** (angiografía, ECG) superan 
-ampliamente a los **factores de riesgo básicos** (edad, colesterol) para clasificación.
+## Step 4
+## Final Conclusions
 
-Este resultado es consistente con la práctica médica, donde la angiografía coronaria 
-es el gold standard para diagnóstico definitivo de enfermedad coronaria.
+### Key Results:
 
-## Paso 4
-## Conclusiones Finales
+1. **Correct implementation of L2 regularization:**
+- Regularized cost: J_reg = J + (λ/2m)||w||²
+- Regularized gradients: dw_reg = dw + (λ/m)w
+- Bias not regularized (correct)
 
-### Resultados Clave:
+2. **Exhaustive experimentation:**
+- λ values tested: [0, 0.001, 0.01, 0.1, 1.0]
+- 1500 iterations each
+- All models converged successfully
 
-1. **Implementación Correcta de L2:**
-- Función de costo regularizada: `J_reg = J + (λ/2m)||w||²`
-- Gradientes regularizados: `dw_reg = dw + (λ/m)w`
-- Bias sin regularización (como debe ser)
-
-2. **Experimentación Exhaustiva:**
-- 5 valores de λ probados: [0, 0.001, 0.01, 0.1, 1.0]
-- Cada modelo entrenado por 1500 iteraciones
-- Convergencia exitosa en todos los casos
-
-3. **Resultado Principal:**
+3. **Main result:**
 ```
-      Optimal λ = 0 (sin regularización)
+      Optimal λ = 0 (no regularization)
       Test Accuracy: 0.8765
       Test F1-Score: 0.8684
-      Mejora: +0.00%
+      Improvement: +0.00%
 ```
 
-4. **Efecto de λ en ||w||:**
-   - λ aumenta → ||w|| disminuye (penalización de pesos grandes)
-   - Reducción máxima: 2.8% con λ=1.0
-   - Pero esto **no mejora** las métricas de clasificación
+4. **Effect of λ on ||w||:**
+   - Higher λ → smaller ||w||
+   - Max reduction ~2.8% with λ=1.0
+   - No improvement in metrics
 
-5. **Ausencia de Overfitting:**
+5. **No Overfitting:**
    - Test metrics ≥ Train metrics
-   - Indica excelente generalización sin necesidad de regularización
-   - El modelo está bien calibrado para el tamaño del dataset
+   - Excellent natural generalization
 
-### Interpretación Médica:
+### Medical Interpretation:
 
-En contexto clínico, este resultado es **positivo** porque:
-- El modelo no necesita ajustes complejos (λ tuning)
-- La implementación es más simple (menos hiperparámetros)
-- Los coeficientes mantienen su interpretabilidad clínica
-- El desempeño (87.65% accuracy, 86.84% F1) es robusto
+This is a positive result because:
+- Model requires no hyperparameter tuning
+- Simpler implementation
+- Coefficients remain clinically interpretable
+- Performance is strong and stable
 
-### Lecciones Aprendidas:
+### Lessons Learned:
 
-**¿Cuándo NO usar regularización?**
-- Dataset balanceado (suficientes muestras por feature)
-- No hay overfitting (Test ≥ Train)
-- Features relevantes y no redundantes
-- Modelo simple y apropiado
+**When NOT to use regularization:**
+- Balanced dataset (enough samples per feature)
+- No overfitting (Test ≥ Train)
+- Relevant and non‑redundant features
+- Simple and appropriate model
 
-**¿Cuándo SÍ usar regularización?**
-- Pocas muestras, muchas features
-- Overfitting evidente (Train >> Test)
-- Features correlacionadas o ruidosas
-- Modelos complejos (polinomios de alto grado)
+**When TO use regularization:**
+- Few samples and many features
+- Clear overfitting (Train ≫ Test)
+- Correlated or noisy features
+- Complex models (high‑degree polynomials)
 
 λ = 0
 Iter    0: Cost = 0.690608, ||w|| = 0.005016
@@ -474,14 +394,16 @@ Iter 1499: Cost = 0.391485, ||w|| = 1.477961
 Iter 1000: Cost = 0.402494, ||w|| = 1.301083
 Iter 1499: Cost = 0.397437, ||w|| = 1.441191
 
-## Paso 5
-Para la realización de esta parte, como tocaba entrenar al programa para que al darle los datos de prueba den un resultado, se crearon nuevos archivos: train.py; inference.py y sagemaker.deployment.ipynb.
+## Step 5
+To complete this section, it was necessary to train the model so it could take input test data and return predictions. This required creating new files: train.py; inference.py y sagemaker.deployment.ipynb.
 
-- El train.py entrena el modelo de regresión logística dentro del SageMaker; para este entrenamiento desde el notebook se crearon nuevos documentos cvs (train.csv), en donde train.py carga y normaliza los datos.
-- El inference.py define como el endpoint hace predicciones cuando recibe los datos de un paciente, es decir, una especie de "cerebro" del endpoint que recibe datos de pacientes y devuelve predicciones en tiempo real.
-- El sagemaker.deployment.ipynb es el que coordina todo lo descrito anteriormente para dar el resultado de los datos.
+- train.py trains the logistic regression model inside SageMaker.
+The notebook generated new CSV files (train.csv), which train.py loads and normalizes.
+- inference.py defines how the endpoint makes predictions when it receives patient data — essentially the "brain" of the endpoint.
+- sagemaker.deployment.ipynb orchestrates everything to produce predictions.
 
-Sin embargo, a la hora de subirlo al SageMaker y ejecutarlo, me tiró los siguientes errores:
+Errors Encountered:
+Upon uploading and running in SageMaker, the following errors occurred:
 
 ![alt text](img/error1.png)
 
@@ -491,4 +413,5 @@ Sin embargo, a la hora de subirlo al SageMaker y ejecutarlo, me tiró los siguie
 
 ![alt text](img/error4.png)
 
-Indagando sobre el error, es un error de conexión probablemente debido a problemas de región, es decir, que el endpoint se genera en una región diferente, y por más estrategias que se implementen sigue tirando estos errores, al menos con esta manera de despliegue que fue la descrita en el punto 5 del laboratorio. Sin embargo, como se evidenció previamente, todo el código hecho funcionó correctamente y el laboratorio fue resuelto en su totalidad.
+Investigation suggests this is a connection error likely due to region mismatches, meaning the endpoint was created in a different AWS region. Despite multiple attempts to fix it, the same error occurred with this deployment approach.
+However, as previously shown, all code worked correctly and the laboratory was fully completed.
