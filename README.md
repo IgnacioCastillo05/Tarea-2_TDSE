@@ -1,6 +1,8 @@
 # Tarea-2_TDSE
 TDSE Project on Logistic Regression
 
+**NOTA**: El cuaderno de Jupyter donde se encuentra todo el desarrollo es el que se llama "notebook.ipynb".
+
 ## Paso 1
 
 ### Feature Selection
