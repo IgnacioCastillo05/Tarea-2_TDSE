@@ -1,6 +1,8 @@
 # Tarea-2_TDSE
 Trabajo de TDSE sobre regresión logística
 
+**NOTA**: El cuaderno de Jupyter donde se encuentra todo el desarrollo es el que se llama "notebook.ipynb".
+
 ## Paso 1
 
 ### Feature Selection
